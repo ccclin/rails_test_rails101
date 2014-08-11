@@ -1,11 +1,13 @@
 class GroupsController < ApplicationController
 
+    before_action :find_group, :only => [:show, :edit, :update, :destroy]
+
     def index
         @groups = Group.all
     end
     
     def show
-        @group = Group.find(params[:id])
+        #@group = Group.find(params[:id])
         @posts = @group.posts
     end
 
@@ -14,7 +16,7 @@ class GroupsController < ApplicationController
     end
 
     def edit
-        @group = Group.find(params[:id])
+        #@group = Group.find(params[:id])
     end
 
     def create
@@ -27,7 +29,7 @@ class GroupsController < ApplicationController
     end
 
     def update
-        @group = Group.find(params[:id])
+        #@group = Group.find(params[:id])
         if @group.update(group_params)
             redirect_to groups_path, :notice => '修改討論版成功'
         else
@@ -36,7 +38,7 @@ class GroupsController < ApplicationController
     end
 
     def destroy
-        @group = Group.find(params[:id])
+        #@group = Group.find(params[:id])
         @group.destroy
         redirect_to groups_path, :alert => '討論版已刪除'
     end
@@ -45,5 +47,9 @@ class GroupsController < ApplicationController
 
     def group_params
         params.require(:group).permit(:title, :description)
+    end
+
+    def find_group
+        @group = Group.find(params[:id])
     end
 end
