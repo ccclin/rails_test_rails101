@@ -3,6 +3,7 @@ class PostsController < ApplicationController
     before_action :find_group
     before_action :authenticate_user!
 	before_action :find_post, :only => [:edit, :update, :destroy]
+	before_action :member_required, :only => [:new, :create]
 
     def new
 		#@group = Group.find(params[:group_id])
@@ -58,5 +59,12 @@ class PostsController < ApplicationController
 	def find_post
 		@post = current_user.posts.find(params[:id])
 	end
+
+	def member_required
+		if !current_user.is_member_of?(@group)
+			flash[:warning] = "你不是這個討論版的成員"
+			redirect_to group_path(@group)
+		end
+	end	
 
 end
